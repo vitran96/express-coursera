@@ -1,0 +1,13 @@
+{
+  "name": "node-mongo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "assert": "1.4.1",
+    "mongodb": "3.0.10"
+  }
+}
