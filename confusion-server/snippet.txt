@@ -26,3 +26,6 @@ mongo -u "foouser" -p "foopwd" YOURHOSTIP --authenticationDatabase "admin"
 
 ## Try attach folder
 docker run -d -p 27017-27019:27017-27019 --restart=always -v \\wsl$\Ubuntu-18.04\home\viubuntu18\web-dev\express-coursera\mongodb\data:/data --name mongodb mongo
+
+## Try mount
+docker run -d -p 27017-27019:27017-27019 --restart=always --name mongodb --mount src="//wsl$/Ubuntu-18.04/home/viubuntu18/web-dev/express-coursera/mongodb/data",dst=/data,type=bind mongo
