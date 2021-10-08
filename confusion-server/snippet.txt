@@ -1,7 +1,6 @@
 docker pull mongo
 
 docker run -d -p 27017-27019:27017-27019 --name mongodb mongo
-
 docker exec -it mongodb bash
 
 mongod --dbpath=dbdata --bind_ip 127.0.0.1
@@ -13,3 +12,17 @@ db.dishes.insert({ name: "Uthappizza", description: "Test" });
 
 var id = new ObjectId();
 id.getTimestamp();
+
+
+## Try create new mongodb user
+docker run --name mongodb --restart=always -d -p 27017:27017 mongo mongod --auth
+mongo
+db.createUser({user:"vt",pwd:"123456789",roles:[{role:"root",db:"admin"}]})
+
+# now you can connect with the admin user (from any mongo client >=3 )
+#  remember to use --authenticationDatabase "admin"
+mongo -u "foouser" -p "foopwd" YOURHOSTIP --authenticationDatabase "admin"
+
+
+## Try attach folder
+docker run -d -p 27017-27019:27017-27019 --restart=always -v \\wsl$\Ubuntu-18.04\home\viubuntu18\web-dev\express-coursera\mongodb\data:/data --name mongodb mongo
