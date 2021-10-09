@@ -5,43 +5,40 @@ const dboper = require('./operations');
 const url = 'mongodb://localhost:27017/';
 const dbname = 'conFusion';
 
-MongoClient.connect(url, (err, client) => {
-    assert.equal(err, null);
-    console.log('Connected to server');
+MongoClient.connect(url)
+    .then((client) => {
+        console.log('Connected to server');
 
-    const db = client.db(dbname);
+        const db = client.db(dbname);
 
-    dboper.insertDocument(
-        db
-        , { name: "Vadonut", description: "Test" }
-        , "dishes"
-        , (result) => {
+        dboper.insertDocument(
+            db
+            , { name: "Vadonut", description: "Test" }
+            , "dishes"
+        ).then((result) => {
             console.log("Insert Document:\n", result.ops);
 
-            dboper.findDocuments(
+            return dboper.findDocuments(db, "dishes");
+        }).then((docs) => {
+            console.log("Found Documents:\n", docs);
+
+            return dboper.updateDocument(
                 db
+                , { name: "Vadonut" }
+                , { description: "Updated Test" }
                 , "dishes"
-                , (docs) => {
-                    console.log("Found Documents:\n", docs);
+            );
+        }).then((result) => {
+            console.log("Updated Document:\n", result.result);
 
-                    dboper.updateDocument(
-                        db
-                        , { name: "Vadonut" }
-                        , { description: "Updated Test" }
-                        , "dishes"
-                        , (result) => {
-                            console.log("Updated Document:\n", result.result);
+            return dboper.findDocuments(db, "dishes");
+        }).then((docs) => {
+            console.log("Found Updated Documents:\n", docs);
 
-                            dboper.findDocuments(db, "dishes", (docs) => {
-                                console.log("Found Updated Documents:\n", docs);
+            return db.dropCollection("dishes");
+        }).then((result) => {
+            console.log("Dropped Collection: ", result);
 
-                                db.dropCollection("dishes", (result) => {
-                                    console.log("Dropped Collection: ", result);
-
-                                    client.close();
-                                });
-                            });
-                        });
-                });
-        });
-});
+            client.close();
+        }).catch(err => console.log(err));
+    }).catch(err => console.log(err));
