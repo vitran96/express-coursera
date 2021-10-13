@@ -5,5 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "node index"
+  },
+  "dependencies": {
+    "mongoose": "^6.0.10"
   }
 }
