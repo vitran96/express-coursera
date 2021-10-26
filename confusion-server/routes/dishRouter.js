@@ -1,5 +1,4 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const Dishes = require('../models/dishes')
 
 const dishRouter = express.Router();
