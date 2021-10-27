@@ -20,7 +20,7 @@ promoRouter.route('/')
     })
     .post((req, res, next) => {
         Promotions.create(req.body)
-            .them(promotion => {
+            .then(promotion => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
                 res.json(promotion);
