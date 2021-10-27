@@ -23,7 +23,7 @@ promoRouter.route('/')
             .them(promotion => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
-                res.json(dish);
+                res.json(promotion);
             }, err => next(err))
             .catch(err => next(err));
     })
