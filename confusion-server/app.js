@@ -16,7 +16,7 @@ const URL = 'mongodb://localhost:27017/conFusion';
 const connect = mongoose.connect(URL);
 
 connect.then(db => {
-  console.log("Connected to server");
+  console.log("Connected to database");
 }, err => console.log(error));
 
 var app = express();
