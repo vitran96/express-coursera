@@ -15,6 +15,8 @@ const mongoose = require('mongoose');
 const URL = 'mongodb://localhost:27017/conFusion';
 const connect = mongoose.connect(URL);
 
+const SECRET = '12345-67890-09876-54321';
+
 connect.then(db => {
   console.log("Connected to database");
 }, err => console.log(error));
@@ -28,10 +30,23 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser(SECRET));
 
 function auth(req, res, next) {
-  console.log(req.headers);
+  // console.log(req.headers);
+  console.log(req.signedCookies);
+  if (req.signedCookies.user) {
+    if (req.signedCookies.user === 'admin') {
+      next();
+    } else {
+      var err = new Error('You are not authenticated!');
+      err.status = 401;
+      next(err);
+    }
+
+    return;
+  }
+
   var authHeader = req.headers.authorization;
   if (!authHeader) {
     var err = new Error('You are not authenticated!');
@@ -45,6 +60,7 @@ function auth(req, res, next) {
   var user = auth[0];
   var pass = auth[1];
   if (user == 'admin' && pass == 'password') {
+    res.cookie('user', 'admin', { signed: true });
     next(); // authorized
   } else {
     var err = new Error('You are not authenticated!');
