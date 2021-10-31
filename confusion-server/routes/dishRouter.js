@@ -236,6 +236,12 @@ dishRouter.route('/:dishId/comments/:commentId')
                     if (dish
                         && dish.comments.id(req.params.commentId)) {
 
+                        if (!dish.comments.id(req.params.commentId).author.equals(req.user._id)) {
+                            err = Error('You are not authorized to modify this comment!');
+                            err.status = 403;
+                            return next(err);
+                        }
+
                         if (req.body.rating) {
                             dish.comments.id(req.params.commentId).rating = req.body.rating;
                         }
@@ -269,13 +275,17 @@ dishRouter.route('/:dishId/comments/:commentId')
     .delete(
         authenticate.verifyUser
         , (req, res, next) => {
-            // TODO: Allow a registered user to submit comments (already completed), update a submitted comment and delete a submitted comment.
-            // The user should be restricted to perform such operations only on his/her own comments.
-            // No user or even the Admin can edit or delete the comments submitted by other users
             Dishes.findById(req.params.dishId)
                 .then((dish) => {
                     if (dish
                         && dish.comments.id(req.params.commentId)) {
+
+                        if (!dish.comments.id(req.params.commentId).author.equals(req.user._id)) {
+                            err = Error('You are not authorized to delete this comment!');
+                            err.status = 403;
+                            return next(err);
+                        }
+
                         dish.comments.id(req.params.commentId).remove();
                         dish.save()
                             .then((dish) => {
