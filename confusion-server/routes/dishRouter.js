@@ -201,18 +201,17 @@ dishRouter.route('/:dishId/comments/:commentId')
         Dishes.findById(req.params.dishId)
             .populate('comments.author')
             .then((dish) => {
-                if (dish != null && dish.comments.id(req.params.commentId) != null) {
+                if (dish
+                    && dish.comments.id(req.params.commentId)) {
                     res.statusCode = 200;
                     res.setHeader('Content-Type', 'application/json');
                     res.json(dish.comments.id(req.params.commentId));
-                }
-                else if (dish == null) {
-                    err = new Error('Dish ' + req.params.dishId + ' not found');
+                } else if (!dish) {
+                    err = Error('Dish ' + req.params.dishId + ' not found');
                     err.status = 404;
                     return next(err);
-                }
-                else {
-                    err = new Error('Comment ' + req.params.commentId + ' not found');
+                } else {
+                    err = Error('Comment ' + req.params.commentId + ' not found');
                     err.status = 404;
                     return next(err);
                 }
@@ -234,13 +233,17 @@ dishRouter.route('/:dishId/comments/:commentId')
             // No user or even the Admin can edit or delete the comments submitted by other users
             Dishes.findById(req.params.dishId)
                 .then((dish) => {
-                    if (dish != null && dish.comments.id(req.params.commentId) != null) {
+                    if (dish
+                        && dish.comments.id(req.params.commentId)) {
+
                         if (req.body.rating) {
                             dish.comments.id(req.params.commentId).rating = req.body.rating;
                         }
+
                         if (req.body.comment) {
                             dish.comments.id(req.params.commentId).comment = req.body.comment;
                         }
+
                         dish.save()
                             .then((dish) => {
                                 Dishes.findById(dish._id)
@@ -251,14 +254,12 @@ dishRouter.route('/:dishId/comments/:commentId')
                                         res.json(dish);
                                     });
                             }, (err) => next(err));
-                    }
-                    else if (dish == null) {
-                        err = new Error('Dish ' + req.params.dishId + ' not found');
+                    } else if (!dish) {
+                        err = Error('Dish ' + req.params.dishId + ' not found');
                         err.status = 404;
                         return next(err);
-                    }
-                    else {
-                        err = new Error('Comment ' + req.params.commentId + ' not found');
+                    } else {
+                        err = Error('Comment ' + req.params.commentId + ' not found');
                         err.status = 404;
                         return next(err);
                     }
@@ -273,7 +274,8 @@ dishRouter.route('/:dishId/comments/:commentId')
             // No user or even the Admin can edit or delete the comments submitted by other users
             Dishes.findById(req.params.dishId)
                 .then((dish) => {
-                    if (dish != null && dish.comments.id(req.params.commentId) != null) {
+                    if (dish
+                        && dish.comments.id(req.params.commentId)) {
                         dish.comments.id(req.params.commentId).remove();
                         dish.save()
                             .then((dish) => {
@@ -285,14 +287,12 @@ dishRouter.route('/:dishId/comments/:commentId')
                                         res.json(dish);
                                     });
                             }, (err) => next(err));
-                    }
-                    else if (dish == null) {
-                        err = new Error('Dish ' + req.params.dishId + ' not found');
+                    } else if (!dish) {
+                        err = Error('Dish ' + req.params.dishId + ' not found');
                         err.status = 404;
                         return next(err);
-                    }
-                    else {
-                        err = new Error('Comment ' + req.params.commentId + ' not found');
+                    } else {
+                        err = Error('Comment ' + req.params.commentId + ' not found');
                         err.status = 404;
                         return next(err);
                     }
