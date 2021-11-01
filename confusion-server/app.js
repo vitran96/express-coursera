@@ -1,14 +1,15 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var passport = require('passport');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const passport = require('passport');
 
-var config = require('./config');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/userRouter');
+const config = require('./config');
+
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/userRouter');
 const dishRouter = require('./routes/dishRouter');
 const promoRouter = require('./routes/promoRouter');
 const leaderRouter = require('./routes/leaderRouter');
@@ -17,13 +18,11 @@ const mongoose = require('mongoose');
 
 const connect = mongoose.connect(config.mongoUrl);
 
-const SECRET = '12345-67890-09876-54321';
-
 connect.then(db => {
   console.log("Connected to database");
 }, err => console.log(err));
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
