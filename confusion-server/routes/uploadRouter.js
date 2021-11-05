@@ -26,7 +26,7 @@ uploadRouter.route('/')
     .get(
         authenticate.verifyUser
         , authenticate.verifyAdmin
-        , (req, res, next) => {
+        , (req, res) => {
             res.statusCode = 403;
             res.end('GET operation not supported on /imageUpload');
         }
@@ -43,14 +43,14 @@ uploadRouter.route('/')
     .put(
         authenticate.verifyUser
         , authenticate.verifyAdmin
-        , (req, res, next) => {
+        , (req, res) => {
             res.statusCode = 403;
             res.end('PUT operation not supported on /imageUpload');
         })
     .delete(
         authenticate.verifyUser
         , authenticate.verifyAdmin
-        , (req, res, next) => {
+        , (req, res) => {
             res.statusCode = 403;
             res.end('DELETE operation not supported on /imageUpload');
         });
