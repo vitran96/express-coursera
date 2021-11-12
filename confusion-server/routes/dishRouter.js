@@ -8,14 +8,14 @@ const dishRouter = express.Router();
 dishRouter.route('/')
     .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
     .get(cors.cors, (req, res, next) => {
+        console.log(req.query);
         Dishes.find(req.query)
-            .populate('comments.author')
             .then((dishes) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
                 res.json(dishes);
-            }, (err) => next(err))
-            .catch((err) => next(err));
+            }, next)
+            .catch(next);
     })
     .post(
         cors.corsWithOptions
@@ -26,14 +26,13 @@ dishRouter.route('/')
                 .then((dish) => {
                     // console.log('Dish Created ', dish);
                     Dishes.findById(dish._id)
-                        .populate('comments.author')
                         .then(dish => {
                             res.statusCode = 200;
                             res.setHeader('Content-Type', 'application/json');
                             res.json(dish);
                         });
-                }, (err) => next(err))
-                .catch((err) => next(err));
+                }, next)
+                .catch(next);
         })
     .put(
         cors.corsWithOptions
@@ -53,21 +52,20 @@ dishRouter.route('/')
                     res.statusCode = 200;
                     res.setHeader('Content-Type', 'application/json');
                     res.json(resp);
-                }, (err) => next(err))
-                .catch((err) => next(err));
+                }, next)
+                .catch(next);
         });
 
 dishRouter.route('/:dishId')
     .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
     .get(cors.cors, (req, res, next) => {
         Dishes.findById(req.params.dishId)
-            .populate('comments.author')
             .then((dish) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
                 res.json(dish);
-            }, (err) => next(err))
-            .catch((err) => next(err));
+            }, next)
+            .catch(next);
     })
     .post(
         cors.corsWithOptions
@@ -88,14 +86,13 @@ dishRouter.route('/:dishId')
                 , { new: true })
                 .then((dish) => {
                     Dishes.findById(dish._id)
-                        .populate('comments.author')
                         .then(dish => {
                             res.statusCode = 200;
                             res.setHeader('Content-Type', 'application/json');
                             res.json(dish);
                         });
-                }, (err) => next(err))
-                .catch((err) => next(err));
+                }, next)
+                .catch(next);
         })
     .delete(
         cors.corsWithOptions
@@ -107,8 +104,8 @@ dishRouter.route('/:dishId')
                     res.statusCode = 200;
                     res.setHeader('Content-Type', 'application/json');
                     res.json(resp);
-                }, (err) => next(err))
-                .catch((err) => next(err));
+                }, next)
+                .catch(next);
         });
 
 module.exports = dishRouter;
