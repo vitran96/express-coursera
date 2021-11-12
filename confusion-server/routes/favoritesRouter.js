@@ -90,8 +90,25 @@ favoriteRouter.route('/:dishId')
         cors.corsWithOptions
         , authenticate.verifyUser
         , (req, res, next) => {
-            res.statusCode = 403;
-            res.end('GET operation not supported on /favorites/:dishId');
+            Favorites.findOne({ user: req.user._id })
+            .then(favorite => {
+                if (favorite) {
+                    if (favorite.dishes.some(dish => dish.equals(req.params.dishId))) {
+                        res.statusCode = 200;
+                        res.setHeader('Content-Type', 'application/json');
+                        res.json({"exists": true, "favorites": favorite});
+                    } else {
+                        res.statusCode = 404;
+                        res.setHeader('Content-Type', 'application/json');
+                        res.json({"exists": false, "favorites": favorite});
+                    }
+                } else {
+                    res.statusCode = 404;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json({"exists": false, "favorites": favorite});
+                }
+            }, next)
+            .catch(next);
         })
     .post(
         cors.corsWithOptions
@@ -102,7 +119,7 @@ favoriteRouter.route('/:dishId')
                     if (favorite) {
                         const dishId = req.params.dishId;
                         if (!favorite.dishes.some(dishObjectId => dishObjectId.equals(dishId))) {
-                            favorite.dishes.push(dishId);
+                            favorite.dishes.push({ "_id": dishId });
                         }
 
                         favorite.save()
