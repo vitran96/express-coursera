@@ -1,0 +1,3 @@
+[submodule "conFusion-React"]
+	path = conFusion-React
+	url = https://github.com/jmuppala/conFusion-React.git
