@@ -26,6 +26,10 @@ const promotionSchema = new Schema({
         required: true,
         min: 0
     },
+    featured: {
+        type: Boolean,
+        default: false
+    }
 });
 
 let Promotions = mongoose.model('Promotion', promotionSchema);

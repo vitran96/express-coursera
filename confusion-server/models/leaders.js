@@ -24,6 +24,10 @@ const leaderSchema = new Schema({
         type: String,
         required: true,
     },
+    featured: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 let Leaders = mongoose.model('Leader', leaderSchema);
