@@ -27,7 +27,7 @@
     },
     "label": {
       "type": "string",
-      "required": true
+      "default": ""
     },
     "price": {
       "type": "string",

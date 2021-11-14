@@ -4,3 +4,6 @@
 [submodule "conFusion-React-Firebase"]
 	path = conFusion-React-Firebase
 	url = https://github.com/jmuppala/conFusion-React-Firebase.git
+[submodule "conFusion-React-Loopback"]
+	path = conFusion-React-Loopback
+	url = https://github.com/jmuppala/conFusion-React-Loopback.git
