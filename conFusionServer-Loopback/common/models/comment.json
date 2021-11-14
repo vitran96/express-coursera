@@ -1,5 +1,5 @@
 {
-  "name": "promotions",
+  "name": "Comment",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
@@ -9,30 +9,29 @@
     "TimeStamp": true
   },
   "properties": {
-    "name": {
-      "type": "string",
-      "required": true
-    },
-    "image": {
-      "type": "string",
-      "required": true
-    },
-    "label": {
-      "type": "string",
-      "required": true
-    },
-    "price": {
-      "type": "string",
+    "rating": {
+      "type": "number",
       "required": true,
-      "default": "0"
+      "default": 5
     },
-    "description": {
+    "comment": {
       "type": "string",
       "required": true
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "dishes": {
+      "type": "belongsTo",
+      "model": "dishes",
+      "foreignKey": ""
+    },
+    "customer": {
+      "type": "belongsTo",
+      "model": "Customer",
+      "foreignKey": "customerId"
+    }
+  },
   "acls": [
     {
       "accessType": "*",
@@ -43,20 +42,20 @@
     {
       "accessType": "READ",
       "principalType": "ROLE",
-      "principalId": "$everyone",
+      "principalId": "$authenticated",
       "permission": "ALLOW"
     },
     {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
-      "principalId": "admin",
+      "principalId": "$authenticated",
       "permission": "ALLOW",
       "property": "create"
     },
     {
       "accessType": "WRITE",
       "principalType": "ROLE",
-      "principalId": "admin",
+      "principalId": "$owner",
       "permission": "ALLOW"
     }
   ],
